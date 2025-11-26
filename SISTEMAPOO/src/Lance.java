@@ -1,4 +1,8 @@
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 public class Lance {
     private int idLance;
@@ -95,6 +99,45 @@ public ArrayList<Lance> listarLances(ArrayList<Lance> listaLances){
         }   
     } return listaLances;
 }
+
+public void inserir() throws Exception{
+    FileWriter fw = new FileWriter("lance.txt", true);
+    BufferedWriter bw = new BufferedWriter(fw);
+    bw.write(this.idLance + ";" + this.participante.getIdParticipante() + ";" + this.itemLeilao.getIdItem() + ";" + this.valorLance + ";" + this.dataLance + ";" + this.horaLance);
+    bw.newLine();
+    bw.close();
+    System.out.println("Lance inserido no lance.txt");
+}
+
+public Lance consultar(int idBusca) throws Exception{
+    FileReader fr = new FileReader("lance.txt");
+    BufferedReader br = new BufferedReader(fr);
+
+    String linha = "";
+
+    while((linha = br.readLine()) != null){
+        String [] dados = linha.split(";");
+
+        if(Integer.parseInt(dados[0].trim()) == idBusca){
+
+            Participante participantetemp = new Participante(0, "", "", "", "", "", "");
+            Participante participanterecuperar = participantetemp.consultar(Integer.parseInt(dados[1].trim())); // ou seja, vai pegar o id do participante que o usuário quiser, no caso da ordem do array dados. o id do participante esta a posição 1
+            // so pra ajudar na explicaçao, o participante e o item sempra vão existir no lance, diferentemente da construção do itemleilao que o lance poderia não existir
+            ItemLeilao itemtemp = new ItemLeilao(0, null, "", 0.0, false, null);
+            ItemLeilao itemrecuperar = itemtemp.consultar(Integer.parseInt(dados[2].trim())); // mesma logica de recuprar o participante, no caso, ele vai pegar no array a posição 2 que esta o id do participante desejado
+
+            Lance l  = new Lance(Integer.parseInt(dados[0].trim()), participanterecuperar, itemrecuperar, Double.parseDouble(dados[3].trim()), dados[4].trim(), dados[5].trim());
+            br.close();
+            System.out.println("Lance encontrado!");
+            return l;
+            
+        }
+    } br.close();
+        System.out.println("Lance não encontrado!");
+        return null;
+
+}
+
 
 
 

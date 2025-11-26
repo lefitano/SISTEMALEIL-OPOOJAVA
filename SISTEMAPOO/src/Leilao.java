@@ -1,4 +1,9 @@
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 public class Leilao {
     private int idLeilao;
     private String dataInicioLeilao;
@@ -78,12 +83,12 @@ public class Leilao {
          }else{
             System.out.println("Registrado");
             System.out.println("ID do leilão : " + getIdLeilao());
-            
+            setStatusLeilao(false);
             return true;
          }
     }
     public boolean iniciarLeilao(){
-        if(getDataInicioLeilao() == null ||getHoraInicioLeilao() == null ||getDataInicioLeilao().isEmpty() || getHoraInicioLeilao().isEmpty() || !isStatusLeilao()){ //CONDIÇÃO PARA VERIFICAR SE FORAM INSERIDOS A HORA E DATA DO INICIO DO LEILAO, COLOQUEI TAMBEM PARA VERIFICAR O STATUS DO LEILAO, NO CASO DO REGISTRO DO MÉTODO ACIMA.
+        if(getIdLeilao() <= 0 ||getDataInicioLeilao() == null ||getHoraInicioLeilao() == null ||getDataInicioLeilao().isEmpty() || getHoraInicioLeilao().isEmpty() || !isStatusLeilao()){ //CONDIÇÃO PARA VERIFICAR SE FORAM INSERIDOS A HORA E DATA DO INICIO DO LEILAO, COLOQUEI TAMBEM PARA VERIFICAR O STATUS DO LEILAO, NO CASO DO REGISTRO DO MÉTODO ACIMA.
             System.out.println("O Leilão precisa estar registrado para ser iniciado");
             System.out.println("A data de inicio e hora de inicio precisam ser informadas");
             System.out.println("Leilão não iniciado.");
@@ -144,6 +149,38 @@ public class Leilao {
         }
 
       }
+      public void inserir() throws Exception{
+        FileWriter fw = new FileWriter("leilao.txt", true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(this.idLeilao + ";" + this.dataInicioLeilao + ";" + this.horaInicioLeilao + ";" + this.dataFimLeilao + ";" + this.horaFimLeilao + ";" + this.statusLeilao);
+        bw.newLine();
+        bw.close();
+        System.out.println("Leilão salvo no arquiv");
+      }
+
+      public Leilao consultar(int idBusca)throws Exception{
+        FileReader fr = new FileReader("leilao.txt");
+        BufferedReader br = new BufferedReader(fr);
+
+        String linha = "";
+
+        while((linha = br.readLine()) != null){
+            String [] dados = linha.split(";");
+            
+            if(Integer.parseInt(dados[0].trim()) == idBusca){
+                Leilao l = new Leilao(Integer.parseInt(dados[0].trim()), dados[1].trim(), dados[2].trim(), dados[3].trim(), dados[4].trim(), Boolean.parseBoolean(dados[5].trim()) );
+                br.close();
+                System.out.println("Leilão encontrado");
+                return l;
+            }
+        }
+        br.close();
+        System.out.println("Leilão não encontrado");
+        return null;
+      }
+
+
+      
       
     }
 

@@ -30,7 +30,7 @@ public class Menu {
         System.out.println("0 = SAIR");
         System.out.println("_____________________");
     }
-    public void executarSistema(){
+    public void executarSistema() throws Exception{
         int opcao = -1; // para iniciar o menu
 
         while(opcao != 0){
@@ -58,7 +58,7 @@ public class Menu {
         } sc.close();
     }
 // ===== >>> aqui eu comcei o menu dos participantes!
-    public void menuParticipantes(){
+    public void menuParticipantes() throws Exception{
         int opcao = -1;
 
         while(opcao != 0){
@@ -66,6 +66,7 @@ public class Menu {
             System.out.println("Digite 1 para registrar participante");
             System.out.println("Digite 2 para fazer o login de participante");
             System.out.println("Digite 3 para listar os participantes");
+            System.out.println("Digite 4 para consultar participante (txt");
             System.out.println("0 para voltar ao menu principal!");
             System.out.println("_________");
 
@@ -78,14 +79,17 @@ public class Menu {
                 loginParticipante();
             }else if(opcao == 3){
                 listarParticipantes();
-            }else if(opcao == 0){
+            }else if(opcao == 4){
+                 consultarParticipantetxt();
+             }
+            else if(opcao == 0){
                 System.out.println("Voltando ao menu princiapl");
             }else{
                 System.out.println("Não tem essa opção chefe");
             }
         }
     }
-        public void registrarParticipante(){
+        public void registrarParticipante()throws Exception{    
             System.out.println("REGISTRAR PARTICIPANTE");
         
         System.out.println("Digite o ID: ");
@@ -114,7 +118,8 @@ public class Menu {
 
         if(p.registrarParticipante()){
             listaParticipantes.add(p);
-            System.out.println("Participante registrado");
+              p.inserir();
+            // System.out.println("Participante registrado"); //já fiz na classe
         }else{
             System.out.println("Não deu pra registrar o participante");
         }
@@ -146,21 +151,33 @@ public class Menu {
                 System.out.println("Participante não encontrado");
         }
       }
+    //   public void inserir() throws Exception{
+
+    //   }
 
       public void listarParticipantes(){
         System.out.println("LISTAD DOS PARTICIPANTES: ");
+        Participante temp = new Participante(0, null, null, null, null, null, null); //OBJETO TEMPORARIO CRIEI PAR CHAMAR O METODO
+        temp.listarParticipantes(listaParticipantes);  
+    
+       }
+      //=====>>>> //TENHO QUE CHAMAR O CONSULTAR O FEITO PARA LEITURA DE ARQUIVO TXT NA CLASSE PARTICIPANTE  <<<<<======
+       public void consultarParticipantetxt() throws Exception{
+        System.out.println("Consultado participante no arquivo de texto");
 
-        if(listaParticipantes.isEmpty()){
-            System.out.println("Lista vazia");
-        }else{
-            for(Participante p : listaParticipantes){
-                System.out.println("____");
-                p.mostrar();
-            }
+        System.out.println("Digite o ID do participante");
+        int idBuscaParticipante = sc.nextInt(); // variavel para receber o inteiro digitar pelo usuario no scanner
+        sc.nextLine(); // vai limpar o buffer
+
+        Participante pTemporario = new Participante(0, null, null, null, null, null, null); //criei um objeto apenas para chamar o metodo e salvar no objeto novo com as informações
+        Participante pEncontrado = pTemporario.consultar(idBuscaParticipante);
+        if(pEncontrado != null){
+            pEncontrado.mostrar();
         }
-      }
+       }
+
       // AQUI COMECEI A CRIAR O MENU DE LEILOES
-      public void menuLeiloes(){
+      public void menuLeiloes() throws Exception{
         int opcao = -1;
         while(opcao != 0){
             System.out.println("===== > MENU DE LEILÃO < =====");
@@ -169,6 +186,7 @@ public class Menu {
             System.out.println("3 para finalizar leilão");
             System.out.println("4 para consultar leilão");
             System.out.println("5 para listar leilão");
+            System.out.println("6 para consultar leilão no txt");
             System.out.println("0 para voltar");
             opcao = sc.nextInt();
             sc.nextLine();
@@ -183,7 +201,10 @@ public class Menu {
                 consultarLeilao();
             }else if (opcao == 5){
                 listarLeiloes();
-            }else if(opcao == 0){
+            }else if(opcao == 6){
+                consultarLeilaotxt();
+            }
+            else if(opcao == 0){
                 System.out.println("Voltando ao menu anterior");
             }else{
             System.out.println("Opção inválida");
@@ -191,7 +212,7 @@ public class Menu {
         }
         //iniciando os metodos de leilao que criei
       }
-      public void registrarLeilao(){
+      public void registrarLeilao() throws Exception{
         System.out.println("REGISTRO DE LEILÃO");
         
         System.out.println("Digite o ID do leilão: ");
@@ -213,6 +234,7 @@ public class Menu {
         Leilao novoLeilao = new Leilao(idLeilao, dataInicioLeilao, horaInicioLeilao, dataFimLeilao, horaFimLeilao, false); //objeto criado com o construtor, lembrando que o status so é alterado quando iniciar o leilao com o metodo
         if(novoLeilao.registrarLeilao()){
             listaLeilao.add(novoLeilao);
+            novoLeilao.inserir();
         }
       }
 
@@ -227,15 +249,14 @@ public class Menu {
                
                 encontrou = true;                               
                 
-             if(l.isStatusLeilao()){   // SE O STATUS JA FOR TRUE, OU SEJA, O LEILAO JA FOI INICIADO
-                System.out.println("Esse leilão já foi iniciado!");
-            }else{
-                l.setStatusLeilao(true); // SE NÃO, MUYDAR O STATUS PARA TRUE E INICIAR O LEILAO
-                System.out.println("Leilão iniciado");
-            }
+             if(l.iniciarLeilao()){   // SE O STATUS JA FOR TRUE, OU SEJA, O LEILAO JA FOI INICIADO
+                System.out.println("Leilão iniciado com sucesso");
+                
+            } 
+            break;
            
         } 
-        break;
+      
       } 
       if(!encontrou){  // SE NENHUMA DAS CONDIÇÕES ACIMA DEREM CERTO!
         System.out.println("Leilão não existe");
@@ -249,31 +270,28 @@ public void consultarLeilao(){
     int idLeilao = sc.nextInt();
     sc.nextLine();
 
-    boolean encontrouLeilao = false;   // variavel apenasd de controle q criei
-    for(Leilao l : listaLeilao){
-        if(l.getIdLeilao() == idLeilao){
-            encontrouLeilao = true;
-            l.mostrar();
-            break;
-        }
-    }
-    if(!encontrouLeilao){
-        System.out.println("Leilão não encontrado!");
+    Leilao temp = new Leilao(idLeilao, null, null, null, null, false);
+    temp.consultarLeilao(listaLeilao, idLeilao);
+
+    
+ }
+ public void consultarLeilaotxt() throws Exception{
+    System.out.println("Aqui vamos consultar o Leilao no txt");
+    System.out.println("Digite o ID do Leilão que você quer pesquisar:");
+    int idBuscaLeilaotxt =  sc.nextInt();
+    sc.nextLine();
+
+    Leilao leilaoTemporario = new Leilao(0, null, null, null, null, false);
+    Leilao leilaoEncontrado = leilaoTemporario.consultar(idBuscaLeilaotxt);
+    if(leilaoEncontrado != null){
+        leilaoEncontrado.mostrar();
     }
  }
  public void listarLeiloes(){
     System.out.println("LISTA DE LEILÕES");
-
-    if(listaLeilao.isEmpty()){
-        System.out.println("Não tem nenhum leilão na lista");
-    }else{
-        for(Leilao l : listaLeilao){
-            System.out.print("__________");
-            l.mostrar();
-            System.out.println("____________");
-        }
-        System.out.println("_________");
-    }
+    Leilao temp = new Leilao(0, null, null, null, null, false);
+    temp.listarLeiloes(listaLeilao);
+    
  }  
  public void finalizarLeilao(){
     System.out.println("PARA FINALIZAR LEILÃO");
@@ -287,14 +305,14 @@ public void consultarLeilao(){
     for(Leilao l : listaLeilao){
         if(idLeilao == l.getIdLeilao()){
             encontrou = true;
-        if(!l.isStatusLeilao()){
-            System.out.println("Leilão não iniciado!");
-        }else{
-            l.setStatusLeilao(false);
-            System.out.println("Leilão finalizado!!!");
-        }
-        
-    }   break;
+        if(l.finalizarLeilao()){
+            System.out.println("Leilão finalizado!");
+            
+        } else{
+            System.out.println("Não foi possível finalizar o leilão");
+        }break;
+
+        }   
     }
         if(!encontrou){
             System.out.println("Leilãoi nao encontrado!");
@@ -304,7 +322,7 @@ public void consultarLeilao(){
 
  // COMECEI O MENU DOS ITENS
 
-public void menuItens(){
+public void menuItens() throws Exception{
 
     int opcao = -1;
 
@@ -315,6 +333,7 @@ public void menuItens(){
         System.out.println("DIGITE 2 PARA ARREMATAR");
         System.out.println("DIGITE 3 PARA CONSULTAR ITEM");
         System.out.println("DIGITE 4 para LISTAR ITENS");
+        System.out.println("DIGITE 5 PARA CONSULTAR ITENS NO TXT");
         
         opcao = sc.nextInt();
         sc.nextLine();
@@ -327,7 +346,10 @@ public void menuItens(){
             consultarItem();
         }else if(opcao == 4){
             listarItens();
-        }else if( opcao == 0){
+        }else if(opcao == 5){
+            consultarItemtxt();
+        }
+        else if( opcao == 0){
             System.out.println("Voltando");
         }else{
             System.out.println("Opção inválida");
@@ -337,7 +359,7 @@ public void menuItens(){
 
 // CRIANDO OS METODOS DO MENU DE ITEMLEILAO
 
-public void registrarItem(){
+public void registrarItem() throws Exception{
     System.out.println("REGISTRO DE ITEM");
 
     System.out.println("Digite o ID do item");
@@ -373,8 +395,9 @@ public void registrarItem(){
     ItemLeilao novoitem = new ItemLeilao(idItem, leilaoEncontrado, descricaoItem, lanceMinimoItem, false, null);
 
 //adiconei o item na listaItens
-     if(novoitem.registrarItem()){
+     if(novoitem.registrarItem()){   //REGISTRAR ITEM FINAL 
         listaItens.add(novoitem);
+        novoitem.inserir(); // inserindo no txt
      }
 }
 
@@ -432,46 +455,40 @@ public void consultarItem(){
     System.out.println("Digite o ID do item que quer ver: ");
     int iDItemConsulta = sc.nextInt();
     sc.nextLine();
+    ItemLeilao temp = new ItemLeilao(iDItemConsulta, null, null, null, false, null);
+    temp.consultarItem(listaItens, iDItemConsulta);
 
-    boolean encontrouItem = false;
-    for(ItemLeilao il : listaItens){
-        if(il.getIdItem() == iDItemConsulta){
-            encontrouItem = true;
-            il.mostrar();
-            break;
-            
+}
+public void consultarItemtxt() throws Exception{
+    System.out.println("VAMO CONSULTAR ITEM NO TXT");
+    System.out.println("Digite o ID de busca do Item desejado :");
+    int idBuscaItemLeilao = sc.nextInt();
+    sc.nextLine();
 
-        }
-    }
-    if(!encontrouItem){
-        System.out.println("Item não encontrado");
+    ItemLeilao itemprovisorio = new ItemLeilao(0, null, null, null, false, null);
+    ItemLeilao itemEncontrado = itemprovisorio.consultar(idBuscaItemLeilao);
+
+    if(itemEncontrado != null){
+        itemEncontrado.mostrar();
     }
 }
 
 public void listarItens(){
     System.out.println("LISTAR ITENS SELECIOJADO");
+    ItemLeilao temp = new ItemLeilao(0, null, null, null, false, null);
+    temp.listarItens(listaItens);
 
-    if(listaItens.isEmpty()){
-        System.out.println("LISTA VAZIA");
-        
-        
-    }
-    else{
-        for(ItemLeilao il : listaItens){
-            System.out.println("-----");
-            il.mostrar();
-            System.out.println("_______");
-        }
-    }
+    
 
 }
-public void menuLance(){
+public void menuLance() throws Exception{
     int opcao = -1;
 
     while(opcao != 0){
         System.out.println("MENU DE LANCES");
         System.out.println("1 para registrar Lance");
         System.out.println("2 para listar lances");
+        System.out.println("3 para consultar lance no txt");
         System.out.println("0 para voltar");
 
         opcao = sc.nextInt();
@@ -481,7 +498,10 @@ public void menuLance(){
             registrarLance();
         }else if(opcao == 2){
             listarLances();
-        }else if(opcao == 0){
+        }else if(opcao == 3){
+            consultarLancetxt();
+        }
+        else if(opcao == 0){
             System.out.println("voltando ao menu");
         }else{
             System.out.println("Opção inválida");
@@ -489,7 +509,7 @@ public void menuLance(){
     }
 }
 
-public void registrarLance(){
+public void registrarLance() throws Exception{
     System.out.println("REGISTRO DE LANCE");
 
     System.out.println("Digite o ID do lance");
@@ -546,25 +566,34 @@ public void registrarLance(){
 
     if(novoLance.registrarLance()){
         listaLances.add(novoLance);
+        novoLance.inserir();
     }
-
 
 }
 
 public void listarLances(){
     System.out.println("LISTAR OS ITENS");
 
-    if(listaLances.isEmpty()){
-        System.out.println("LISTA DE LANCES TA VAZIA");
-    }else{
-    for(Lance l : listaLances){
-        System.out.println("_____");
-        l.mostrar();
-        System.out.println("_____");
+    Lance temp = new Lance(0, null, null, null, null, null);
+    temp.listarLances(listaLances);
 
-        }
+}
 
+public void consultarLancetxt() throws Exception{
+    System.out.println("CONSULTAR LANCE NO TXT");
+    System.out.println("Digite o ID para consultar Lance no txt");
+
+    int idBuscaLance = sc.nextInt();
+    sc.nextLine();
+
+    Lance lancetemporario = new Lance(0, null, null, 0.0, null, null);
+    Lance lanceEncontrado = lancetemporario.consultar(idBuscaLance);
+
+    if(lanceEncontrado != null){
+        lanceEncontrado.mostrar();
     }
+
+
 }
 
 

@@ -1,4 +1,9 @@
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 public class ItemLeilao {
     private int idItem;
     private Leilao leilao;
@@ -133,6 +138,46 @@ public ArrayList<ItemLeilao> listarItens(ArrayList<ItemLeilao> listaItens){
         }
         return listaItens;
     }
+}
+public void inserir() throws Exception{
+    FileWriter fw = new FileWriter("itemleilao.txt", true);
+    BufferedWriter bw = new BufferedWriter(fw);
+    bw.write(this.idItem + ";" + this.leilao.getIdLeilao() + ";" + this.descricaoItem + ";" + this.lanceMinimoItem + ";" + this.itemArrematado + ";" + this.lanceArrematante.getIdLance());
+    bw.newLine();
+    bw.close();
+    System.out.println("Item Leilão escrito no arquivo");
+}
+
+public ItemLeilao consultar(int idBusca) throws Exception{
+    FileReader fr = new FileReader("itemleilao.txt");
+    BufferedReader br = new BufferedReader(fr);
+
+    String linha = "";
+
+    while((linha = br.readLine()) != null){
+        String [] dados = linha.split(";");
+
+        if(Integer.parseInt(dados[0].trim()) == idBusca){
+
+            Leilao  leilaotemp  = new Leilao(0, "", "", "", "", false); //criei um objeto temporario de leilao so pra chamar o metodo consultar que tem nele
+            Leilao leilaorecuperar = leilaotemp.consultar(Integer.parseInt(dados[1].trim())); // chamei o método consultar( passei o dados[1] que é o id do Leilao seguindo o construtor que ele vai buscar), ele deve me retornar o leilao desejado
+
+            Lance lancerecuperar = null; // assume que o item não foi arremetado ainda, pois no caso, o leilao smp vai existir
+            if(!dados[5].equals("null")){ // compara, se existir um lance, entao vai buscar ele, por isso o ! no começo, como coloquei acima, o lance pode n existir
+                Lance lancetemp = new Lance(0, null, null, 0.0, "", "");
+                lancerecuperar = lancetemp.consultar(Integer.parseInt(dados[5].trim())); // para bsucaro id do lance!
+            }
+
+            ItemLeilao i = new ItemLeilao(Integer.parseInt(dados[0].trim()), leilaorecuperar, dados[2].trim(), Double.parseDouble(dados[3].trim()), Boolean.parseBoolean(dados[4].trim()), lancerecuperar);
+            br.close();
+            System.out.println("Leilão encontrado!");
+            return i;
+            
+        }
+    }
+    br.close();
+    System.out.println("Item não encontrado!");
+    return null;
 }
 
 

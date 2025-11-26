@@ -1,4 +1,8 @@
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 public class Participante{
     private int idParticipante;
@@ -98,6 +102,7 @@ public boolean registrarParticipante(){
         System.out.println("Não foi possível fazer o registro de participante");
         return false;
     }else{
+        //Participante p = new Participante(idParticipante, nomeParticipante, loginParticipante, senhaParticipante, emailParticipante, enderecoParticipante, telefoneParticipante);
         System.out.println("Participante registrado com sucesso");
         return true;
     }
@@ -116,5 +121,36 @@ public ArrayList<Participante> listarParticipantes(ArrayList<Participante> lista
         }
     }
     return listaParticipantes;
+}
+
+public void inserir() throws Exception{
+    FileWriter fw = new FileWriter("participante.txt", true);
+    BufferedWriter bw = new BufferedWriter(fw);
+    bw.write(this.idParticipante + ";" + this.nomeParticipante + ";" + this.loginParticipante + ";" + this.senhaParticipante + ";" + this.emailParticipante + ";" + this.enderecoParticipante + ";" + this.telefoneParticipante);
+    bw.newLine();
+    bw.close();
+    System.out.println("Participante salvo no arquivo participante.txt");
+}
+
+public Participante consultar(int idBusca) throws Exception{
+    FileReader fr = new FileReader("participante.txt");
+    BufferedReader br = new BufferedReader(fr);
+
+    String linha = "";
+    while((linha = br.readLine()) != null){ // loop para ler as linhas do arquivo que forem diferentes de null
+        String [] dados = linha.split(";"); // cria o array dados e quebra as linhas em cada ;
+
+        if(Integer.parseInt(dados[0].trim()) == idBusca){ // compara se o o dados[0] que no array é o ID, convertendo ele pra inteiro e compara com idBusca que eu passei como parâmetro, além de quebrar o espaços em branco om trim()
+            Participante p = new Participante(Integer.parseInt(dados[0].trim()), dados[1].trim(),dados[2].trim(), dados[3].trim(), dados[4].trim(), dados[5].trim(), dados[6].trim()); // aqui foi p transformar o primeiro parâmetro para inteiro, já que recebe uma string e o resto dos parâmetros continuam String, seguindo a ordem do construtor
+
+                br.close(); // para fechar o reader quando enconttrar
+                System.out.println("Participante encontrado");
+                return p;
+
+        }
+    }
+    br.close(); // para fehcar o reader caso não encontrar
+    System.out.println("Participante não encontrado");
+    return null;
 }
 }
