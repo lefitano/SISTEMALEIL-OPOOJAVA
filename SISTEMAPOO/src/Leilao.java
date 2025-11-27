@@ -88,13 +88,17 @@ public class Leilao {
          }
     }
     public boolean iniciarLeilao(){
-        if(getIdLeilao() <= 0 ||getDataInicioLeilao() == null ||getHoraInicioLeilao() == null ||getDataInicioLeilao().isEmpty() || getHoraInicioLeilao().isEmpty() || !isStatusLeilao()){ //CONDIÇÃO PARA VERIFICAR SE FORAM INSERIDOS A HORA E DATA DO INICIO DO LEILAO, COLOQUEI TAMBEM PARA VERIFICAR O STATUS DO LEILAO, NO CASO DO REGISTRO DO MÉTODO ACIMA.
+        if(getIdLeilao() <= 0 ||getDataInicioLeilao() == null ||getHoraInicioLeilao() == null ||getDataInicioLeilao().isEmpty() || getHoraInicioLeilao().isEmpty()){ //CONDIÇÃO PARA VERIFICAR SE FORAM INSERIDOS A HORA E DATA DO INICIO DO LEILAO, COLOQUEI TAMBEM PARA VERIFICAR O STATUS DO LEILAO, NO CASO DO REGISTRO DO MÉTODO ACIMA.
             System.out.println("O Leilão precisa estar registrado para ser iniciado");
             System.out.println("A data de inicio e hora de inicio precisam ser informadas");
             System.out.println("Leilão não iniciado.");
             setStatusLeilao(false);
             return false;
-        }else{
+        }else if(isStatusLeilao()){
+            System.out.println("Leilão ja está ativo!");
+            return false;
+        }
+        else{
             System.out.println("Agendado");
             System.out.println("Hora Início do Leilão : " + getHoraInicioLeilao());
             System.out.println("Data Início do Leilão : " + getDataInicioLeilao());

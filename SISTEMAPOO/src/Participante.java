@@ -98,7 +98,7 @@ public Participante loginParticipante(String login, String senha){
 
 // MÉTODO PARA REGISTRAR PARTICIPANTE (TIRAR DÚVIDA COM PROFESSOR)
 public boolean registrarParticipante(){
-    if(getLoginParticipante() == null || getNomeParticipante() == null  || getEmailParticipante() == null){
+    if(getIdParticipante() <= 0 ||getLoginParticipante() == null || getNomeParticipante() == null  || getEmailParticipante() == null){
         System.out.println("Não foi possível fazer o registro de participante");
         return false;
     }else{

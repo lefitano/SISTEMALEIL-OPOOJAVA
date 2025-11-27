@@ -170,7 +170,7 @@ public ItemLeilao consultar(int idBusca) throws Exception{
 
             ItemLeilao i = new ItemLeilao(Integer.parseInt(dados[0].trim()), leilaorecuperar, dados[2].trim(), Double.parseDouble(dados[3].trim()), Boolean.parseBoolean(dados[4].trim()), lancerecuperar);
             br.close();
-            System.out.println("Leilão encontrado!");
+            System.out.println("Item encontrado!");
             return i;
             
         }

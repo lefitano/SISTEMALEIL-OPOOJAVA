@@ -117,8 +117,8 @@ public class Menu {
         Participante p = new Participante(idParticipante, nomeParticipante, loginParticipante, senhaParticipante, emailParticipante, enderecoParticipante, telefoneParticipante);
 
         if(p.registrarParticipante()){
-            listaParticipantes.add(p);
-              p.inserir();
+            listaParticipantes.add(p); //adiciona na lista
+              p.inserir(); //insere no arquivo
             // System.out.println("Participante registrado"); //já fiz na classe
         }else{
             System.out.println("Não deu pra registrar o participante");
@@ -147,7 +147,7 @@ public class Menu {
                 break;
             }
             
-        }   if(!participanteEncontrado){
+        }   if(participanteEncontrado){
                 System.out.println("Participante não encontrado");
         }
       }
@@ -234,7 +234,7 @@ public class Menu {
         Leilao novoLeilao = new Leilao(idLeilao, dataInicioLeilao, horaInicioLeilao, dataFimLeilao, horaFimLeilao, false); //objeto criado com o construtor, lembrando que o status so é alterado quando iniciar o leilao com o metodo
         if(novoLeilao.registrarLeilao()){
             listaLeilao.add(novoLeilao);
-            novoLeilao.inserir();
+            novoLeilao.inserir(); // chamei o método inserir para escrever no txt igual o do registrar participante.
         }
       }
 
@@ -334,6 +334,7 @@ public void menuItens() throws Exception{
         System.out.println("DIGITE 3 PARA CONSULTAR ITEM");
         System.out.println("DIGITE 4 para LISTAR ITENS");
         System.out.println("DIGITE 5 PARA CONSULTAR ITENS NO TXT");
+        System.out.println("DIGITE 0 PARA VOLTAR O MENU");
         
         opcao = sc.nextInt();
         sc.nextLine();
@@ -387,6 +388,7 @@ public void registrarItem() throws Exception{
 
     System.out.println("Digite a descrição do item :");
     String descricaoItem = sc.nextLine();
+    sc.nextLine();
 
     System.out.println("Digite o lance minimo do item : ");
     Double lanceMinimoItem = sc.nextDouble();
