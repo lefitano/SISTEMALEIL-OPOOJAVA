@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+
+import javax.annotation.processing.FilerException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -136,7 +139,34 @@ public Lance consultar(int idBusca) throws Exception{
         System.out.println("Lance não encontrado!");
         return null;
 
-}
+    }
+
+    public ArrayList<Lance> listarLancestxt() throws Exception{
+        ArrayList<Lance> listatxtlance = new ArrayList<>();
+        FileReader fr = new FileReader("lance.txt");
+        BufferedReader br = new BufferedReader(fr);
+        
+
+        String linha = "";
+
+        while((linha = br.readLine()) != null){
+            String [] dados = linha.split(";");
+
+            Participante ptemporario = new Participante(0, null, null, null, null, null, null);
+            Participante pIdBuscado = ptemporario.consultar(Integer.parseInt(dados[1].trim()));
+
+            ItemLeilao itemporario = new ItemLeilao(0, null, null, null, false, null);
+            ItemLeilao iIdBuscado = itemporario.consultar(Integer.parseInt(dados[2].trim()));
+            
+            Lance l = new Lance(Integer.parseInt(dados[0].trim()), pIdBuscado, iIdBuscado, Double.parseDouble(dados[3].trim()), dados[4].trim(), dados[5].trim());
+            listatxtlance.add(l);
+        }
+        
+        br.close();
+        return listatxtlance;
+    }
+   
+    
 
 
 

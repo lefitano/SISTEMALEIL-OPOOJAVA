@@ -153,4 +153,24 @@ public Participante consultar(int idBusca) throws Exception{
     System.out.println("Participante não encontrado");
     return null;
 }
+
+public ArrayList<Participante> listarParticipantestxt() throws Exception{
+    ArrayList<Participante> listatxtparticipante = new ArrayList<>();
+    FileReader fr = new FileReader("participante.txt");
+    BufferedReader br = new BufferedReader(fr);
+    String linha = "";
+
+    while((linha = br.readLine()) != null){
+        String [] dados = linha.split(";");
+        Participante p = new Participante(Integer.parseInt(dados[0].trim()), dados[1].trim(), dados[2].trim(), dados[3].trim(), dados[4].trim(), dados[5].trim(), dados[6].trim());
+        listatxtparticipante.add(p);
+        
+
+        
+    }
+    br.close();
+    return listatxtparticipante;
+
+
+}
 }

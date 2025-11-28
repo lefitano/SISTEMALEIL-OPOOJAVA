@@ -180,5 +180,27 @@ public ItemLeilao consultar(int idBusca) throws Exception{
     return null;
 }
 
+public ArrayList<ItemLeilao> listaritemleilaotxt() throws Exception{
+    ArrayList<ItemLeilao> listaItemLeilaotxt = new ArrayList<>();
+    FileReader fr = new FileReader("itemleilao.txt");
+    BufferedReader br = new BufferedReader(fr);
+
+    String linha = "";
+
+    while((linha = br.readLine()) != null){
+        String [] dados = linha.split(";");
+        Leilao ltemporario = new Leilao(0, null, null, null, null, false);
+        Leilao lIdBuscado = ltemporario.consultar(Integer.parseInt(dados[1].trim()));
+
+        Lance latemporario = new Lance(0, null, null, 0.0, "", "");
+        Lance laIdBuscado = latemporario.consultar(Integer.parseInt(dados[5].trim()));
+
+        ItemLeilao i = new ItemLeilao(idItem, lIdBuscado, dados[3].trim(), Double.parseDouble(dados[4].trim()), Boolean.parseBoolean(dados[5].trim()), laIdBuscado);
+        listaItemLeilaotxt.add(i);
+        
+    }br.close();
+    return listaItemLeilaotxt;
+}
+
 
 }

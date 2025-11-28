@@ -5,6 +5,10 @@ public class Menu {
     private ArrayList<Leilao> listaLeilao = new ArrayList<>();
     private ArrayList<ItemLeilao> listaItens = new ArrayList<>();
     private ArrayList<Lance> listaLances = new ArrayList<>();
+    private ArrayList<Participante> listatxtparticipante = new ArrayList<>();
+    private ArrayList<Leilao> listaleilaotxt = new ArrayList<>();
+    ArrayList<ItemLeilao> listaItemLeilaotxt = new ArrayList<>();
+    ArrayList<Lance> listatxtlance = new ArrayList<>();
     private Scanner sc = new Scanner(System.in);
     
     public Menu(){   //construtor do menu, ja inicializei em cima
@@ -67,6 +71,7 @@ public class Menu {
             System.out.println("Digite 2 para fazer o login de participante");
             System.out.println("Digite 3 para listar os participantes");
             System.out.println("Digite 4 para consultar participante (txt");
+            System.out.println("Digite 5 para Listar participantes txt");
             System.out.println("0 para voltar ao menu principal!");
             System.out.println("_________");
 
@@ -81,7 +86,9 @@ public class Menu {
                 listarParticipantes();
             }else if(opcao == 4){
                  consultarParticipantetxt();
-             }
+            }else if(opcao == 5){
+                listarparticipantestxt();
+            }
             else if(opcao == 0){
                 System.out.println("Voltando ao menu princiapl");
             }else{
@@ -176,6 +183,16 @@ public class Menu {
         }
        }
 
+       public void listarparticipantestxt() throws Exception{
+        System.out.println("LISTAR PARTICIPANTES NO TXT");
+
+        for(Participante l : listatxtparticipante){
+            if(listatxtparticipante != null){
+                l.mostrar();
+            }
+        }
+       }
+
       // AQUI COMECEI A CRIAR O MENU DE LEILOES
       public void menuLeiloes() throws Exception{
         int opcao = -1;
@@ -187,6 +204,7 @@ public class Menu {
             System.out.println("4 para consultar leilão");
             System.out.println("5 para listar leilão");
             System.out.println("6 para consultar leilão no txt");
+            System.out.println("7 para listar leilão no txt");
             System.out.println("0 para voltar");
             opcao = sc.nextInt();
             sc.nextLine();
@@ -203,6 +221,8 @@ public class Menu {
                 listarLeiloes();
             }else if(opcao == 6){
                 consultarLeilaotxt();
+            }else if(opcao == 7){
+                listarleilaotxt();
             }
             else if(opcao == 0){
                 System.out.println("Voltando ao menu anterior");
@@ -292,7 +312,17 @@ public void consultarLeilao(){
     Leilao temp = new Leilao(0, null, null, null, null, false);
     temp.listarLeiloes(listaLeilao);
     
- }  
+ }
+
+ public void listarleilaotxt()throws Exception{
+    System.out.println("LISTAR DE LEILÕES TXT");
+    for(Leilao l : listaleilaotxt){
+        if(listaleilaotxt != null){
+            l.mostrar();
+        }
+    }
+
+ }
  public void finalizarLeilao(){
     System.out.println("PARA FINALIZAR LEILÃO");
     System.out.println("Diga o ID do leilão para finalizar");
@@ -334,6 +364,7 @@ public void menuItens() throws Exception{
         System.out.println("DIGITE 3 PARA CONSULTAR ITEM");
         System.out.println("DIGITE 4 para LISTAR ITENS");
         System.out.println("DIGITE 5 PARA CONSULTAR ITENS NO TXT");
+        System.out.println("DIGITE 6 PARA LISTAR ITENS DO TXT");
         System.out.println("DIGITE 0 PARA VOLTAR O MENU");
         
         opcao = sc.nextInt();
@@ -349,6 +380,8 @@ public void menuItens() throws Exception{
             listarItens();
         }else if(opcao == 5){
             consultarItemtxt();
+        }else if(opcao == 6){
+            listaritemleilaotxt();
         }
         else if( opcao == 0){
             System.out.println("Voltando");
@@ -480,8 +513,14 @@ public void listarItens(){
     ItemLeilao temp = new ItemLeilao(0, null, null, null, false, null);
     temp.listarItens(listaItens);
 
-    
-
+}
+public void listaritemleilaotxt() throws Exception{
+    System.out.println("LISTAR ITENS DO TXT");
+    for(ItemLeilao il : listaItemLeilaotxt){
+        if(listaItemLeilaotxt != null){
+            il.mostrar();
+        }
+    }
 }
 public void menuLance() throws Exception{
     int opcao = -1;
@@ -491,6 +530,7 @@ public void menuLance() throws Exception{
         System.out.println("1 para registrar Lance");
         System.out.println("2 para listar lances");
         System.out.println("3 para consultar lance no txt");
+        System.out.println("4 PARA LISTAR LANCES DO TXT");
         System.out.println("0 para voltar");
 
         opcao = sc.nextInt();
@@ -502,6 +542,8 @@ public void menuLance() throws Exception{
             listarLances();
         }else if(opcao == 3){
             consultarLancetxt();
+        }else if(opcao == 4){
+            listarLancestxt();
         }
         else if(opcao == 0){
             System.out.println("voltando ao menu");
@@ -579,6 +621,14 @@ public void listarLances(){
     Lance temp = new Lance(0, null, null, null, null, null);
     temp.listarLances(listaLances);
 
+}
+public void listarLancestxt() throws Exception{
+    System.out.println("LISTAR LANCES DO TXT");
+    for(Lance l : listaLances){
+        if(listaLances != null){
+            l.mostrar();
+        }
+    }
 }
 
 public void consultarLancetxt() throws Exception{

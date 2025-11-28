@@ -183,6 +183,23 @@ public class Leilao {
         return null;
       }
 
+      public ArrayList<Leilao> listarleilaotxt() throws Exception{
+        ArrayList<Leilao> listaleilaotxt = new ArrayList<>();
+        FileReader fr = new FileReader("leilao.txt");
+        BufferedReader br = new BufferedReader(fr);
+
+        String linha = "";
+
+        while((linha = br.readLine()) != null){
+            String [] dados = linha.split(";");
+            Leilao l = new Leilao(Integer.parseInt(dados[0].trim()), dados[1].trim(), dados[2].trim(), dados[3].trim(), dados[4].trim(), Boolean.parseBoolean(dados[5].trim()));
+            listaleilaotxt.add(l);
+        }br.close();
+        return listaleilaotxt;
+
+
+      }
+
 
       
       
